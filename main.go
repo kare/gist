@@ -17,7 +17,7 @@ It does not need any other permissions.
 The -token flag specifies an alternate file from which to read the token.
 
 */
-package main
+package main // import "kkn.fi/gist"
 
 import (
 	"flag"
