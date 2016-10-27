@@ -1,7 +1,7 @@
 /*
 Gist is a client for creating GitHub Gists.
 
-	usage: gist -f file1.txt,file2.txt,file3.txt [-d "gist description"]
+	usage: gist [-p] [-d string] file ...
 
 Gist uploads local file[s] to gist.github.com and prints information
 about the created Gist. Default user is the authenticated user.
@@ -35,14 +35,13 @@ import (
 )
 
 var (
-	fileFlag   = flag.String("f", "", "`comma separated list of file(s)` to upload as a Gist. first file names Gist")
 	descFlag   = flag.String("d", "", "description for Gist")
 	publicFlag = flag.Bool("p", false, "create a public Gist")
 	tokenFile  = flag.String("token", "", "read GitHub personal access token from `file` (default $HOME/.github-gist-token)")
 )
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gist -f file,file2 [-d string] [-p]\n")
+	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] file ...\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -53,23 +52,21 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("gist: ")
 
-	if *fileFlag == "" {
+	filenames := flag.Args()
+	if len(filenames) == 0 {
 		usage()
 	}
 
 	files := make(map[github.GistFilename]github.GistFile)
-	filenames := strings.FieldsFunc(*fileFlag, func(c rune) bool {
-		return c == ','
-	})
-	for _, file := range filenames {
-		f := string(file)
+	for _, f := range filenames {
+		file := string(f)
 		buf, err := ioutil.ReadFile(file)
 		if err != nil {
 			log.Fatal(err)
 		}
 		content := string(buf)
 		gistFile := github.GistFile{
-			Filename: &f,
+			Filename: &file,
 			Content:  &content,
 		}
 		files[github.GistFilename(file)] = gistFile
