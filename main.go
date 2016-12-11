@@ -1,7 +1,7 @@
 /*
 Gist is a client for creating GitHub Gists.
 
-	usage: gist [-p] [-a] [-d string] file ...
+	usage: gist [-p] [-a] [-d string] file ... | -f file
 
 Gist uploads local file[s] to gist.github.com and prints information
 about the created Gist. Default user is the authenticated user.
@@ -38,11 +38,12 @@ var (
 	descFlag   = flag.String("d", "", "description for Gist")
 	publicFlag = flag.Bool("p", false, "create a public Gist")
 	anonFlag   = flag.Bool("a", false, "create anonymous Gist")
+	fileFlag   = flag.String("f", "", "file name of the Gist. Reads file contents from stdin")
 	tokenFile  = flag.String("token", "", "read GitHub personal access token from `file` (default $HOME/.github-gist-token)")
 )
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] [-a] file ...\n")
+	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] [-a] file ... | -f file \n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -53,11 +54,10 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("gist: ")
 
-	filenames := flag.Args()
-	if len(filenames) == 0 {
+	if *fileFlag == "" && len(flag.Args()) == 0 {
 		usage()
 	}
-
+	filenames := flag.Args()
 	files := make(map[github.GistFilename]github.GistFile)
 	for _, f := range filenames {
 		file := string(f)
@@ -71,6 +71,18 @@ func main() {
 			Content:  &content,
 		}
 		files[github.GistFilename(file)] = gistFile
+	}
+	if *fileFlag != "" {
+		buf, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			log.Fatal(err)
+		}
+		content := string(buf)
+		gistFile := github.GistFile{
+			Filename: fileFlag,
+			Content:  &content,
+		}
+		files[github.GistFilename(*fileFlag)] = gistFile
 	}
 
 	if !*anonFlag {
