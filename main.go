@@ -20,6 +20,7 @@ The -token flag specifies an alternate file from which to read the token.
 package main // import "kkn.fi/cmd/gist"
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -28,6 +29,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"golang.org/x/oauth2"
 
@@ -96,7 +98,10 @@ func main() {
 		Public:      publicFlag,
 		Files:       files,
 	}
-	g, _, err := client.Gists.Create(gist)
+	timeout := time.Second * time.Duration(5)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	g, _, err := client.Gists.Create(ctx, gist)
 	if err != nil {
 		log.Fatal(err)
 	}
