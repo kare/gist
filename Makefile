@@ -1,5 +1,5 @@
 
-NAME := kkn.fi/gist
+NAME := kkn.fi/cmd/gist
 .PHONY: build install clean test vet lint errcheck check
 
 build:

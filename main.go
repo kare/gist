@@ -17,7 +17,7 @@ It does not need any other permissions.
 The -token flag specifies an alternate file from which to read the token.
 
 */
-package main // import "kkn.fi/gist"
+package main // import "kkn.fi/cmd/gist"
 
 import (
 	"flag"
@@ -43,7 +43,7 @@ var (
 )
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] [-a] file ... | -f file \n")
+	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] [-a] file ... | -f file\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }

@@ -4,7 +4,7 @@
 ## Installation
 
 ```
-go get kkn.fi/gist
+go get kkn.fi/cmd/gist
 ```
 
 ## Usage
