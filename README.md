@@ -8,6 +8,7 @@ go get kkn.fi/cmd/gist
 ```
 
 ## Usage
+
 ```
 % gist -h
 usage: gist [-d string] [-p] [-a] file ... | -f file
@@ -20,6 +21,12 @@ usage: gist [-d string] [-p] [-a] file ... | -f file
   -token file
     	read GitHub personal access token from file (default $HOME/.github-gist-token)
 ```
+
+## Dependencies
+
+ - [Google GitHub](https://godoc.org/github.com/google/go-github/github)
+ - [oauth2](https://godoc.org/golang.org/x/oauth2)
+
 ## License
 
 BSD-3-Clause. See [LICENSE](LICENSE) for details.
