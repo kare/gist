@@ -11,7 +11,7 @@ go get kkn.fi/cmd/gist
 
 ```
 % gist -h
-usage: gist [-d string] [-p] [-a] file ... | -f file
+usage: gist [-v] [-d string] [-p] [-a] file ... | -f file
   -a	create anonymous Gist
   -d string
     	description for Gist
@@ -20,6 +20,7 @@ usage: gist [-d string] [-p] [-a] file ... | -f file
   -p	create a public Gist
   -token file
     	read GitHub personal access token from file (default $HOME/.github-gist-token)
+  -v	print version and exit
 ```
 
 ## Dependencies

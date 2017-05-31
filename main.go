@@ -1,7 +1,7 @@
 /*
 Gist is a client for creating GitHub Gists.
 
-	usage: gist [-p] [-a] [-d string] file ... | -f file
+	usage: gist [-v] [-p] [-a] [-d string] file ... | -f file
 
 Gist uploads local file[s] to gist.github.com and prints information
 about the created Gist. Default user is the authenticated user.
@@ -27,7 +27,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 
@@ -37,6 +39,9 @@ import (
 )
 
 var (
+	version    string
+	date       string
+	v          = flag.Bool("v", false, "print version and exit")
 	descFlag   = flag.String("d", "", "description for Gist")
 	publicFlag = flag.Bool("p", false, "create a public Gist")
 	anonFlag   = flag.Bool("a", false, "create anonymous Gist")
@@ -45,7 +50,7 @@ var (
 )
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gist [-d string] [-p] [-a] file ... | -f file\n")
+	fmt.Fprintf(os.Stderr, "usage: gist [-v] [-d string] [-p] [-a] file ... | -f file\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
@@ -56,6 +61,10 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("gist: ")
 
+	if *v {
+		fmt.Printf("%v: %v %v %v\n", path.Base(os.Args[0]), version, date, runtime.Version())
+		os.Exit(0)
+	}
 	if *fileFlag == "" && len(flag.Args()) == 0 {
 		usage()
 	}

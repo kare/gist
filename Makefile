@@ -2,11 +2,14 @@
 NAME := kkn.fi/cmd/gist
 .PHONY: build install clean test vet lint errcheck check
 
+VERSION=$(shell cat version.txt)
+DATE=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
+
 build:
-	go build $(NAME)
+	go build -ldflags "-X main.version=${VERSION} -X main.date=${DATE}" $(NAME)
 
 install:
-	go install $(NAME)
+	go install -ldflags "-X main.version=${VERSION} -X main.date=${DATE}" $(NAME)
 
 clean:
 	@rm -rf gist
