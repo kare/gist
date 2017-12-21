@@ -30,3 +30,7 @@ lint: $(GOMETALINTER)
 $(GOMETALINTER):
 	go get -u github.com/alecthomas/gometalinter
 	gometalinter --install
+
+.PHONY: setup
+setup:
+	go get -u github.com/golang/dep/cmd/dep
