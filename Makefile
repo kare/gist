@@ -1,30 +1,32 @@
 
-NAME := kkn.fi/cmd/gist
-.PHONY: build install clean test vet lint errcheck check
+IMPORT_PATH := kkn.fi/cmd/gist
+
+GOMETALINTER := $(GOPATH)/bin/gometalinter
 
 VERSION=$(shell cat version.txt)
 DATE=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
+VERSION_FLAGS := -ldflags='-X "main.version=$(VERSION)" -X "main.date=$(DATE)"'
 
+.PHONY: build
 build:
-	go build -ldflags "-X main.version=${VERSION} -X main.date=${DATE}" $(NAME)
+	go build $(VERSION_FLAGS) $(IMPORT_PATH)
 
+.PHONY: install
 install:
-	go install -ldflags "-X main.version=${VERSION} -X main.date=${DATE}" $(NAME)
+	go install $(VERSION_FLAGS) $(IMPORT_PATH)
 
+.PHONY: clean
 clean:
 	@rm -rf gist
 
+.PHONY: test
 test:
-	go test $(NAME)/...
+	go test $(IMPORT_PATH)/...
 
-vet:
-	go vet $(NAME)/...
+.PHONY: lint
+lint: $(GOMETALINTER)
+	gometalinter --vendor ./...
 
-lint:
-	golint $(NAME)/...
-
-errcheck:
-	errcheck $(NAME)/...
-
-check: vet lint errcheck test
-
+$(GOMETALINTER):
+	go get -u github.com/alecthomas/gometalinter
+	gometalinter --install
