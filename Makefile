@@ -3,7 +3,7 @@ IMPORT_PATH := kkn.fi/cmd/gist
 
 GOMETALINTER := $(GOPATH)/bin/gometalinter
 
-VERSION=$(shell cat version.txt)
+VERSION=$(shell git describe --tags --always --dirty="-dev")
 DATE=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
 VERSION_FLAGS := -ldflags='-X "main.version=$(VERSION)" -X "main.date=$(DATE)"'
 
