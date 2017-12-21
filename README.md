@@ -1,6 +1,8 @@
 
 # gist
 
+[![Build Status](https://travis-ci.org/kare/gist.svg?branch=master)](https://travis-ci.org/kare/gist)
+
 ## Installation
 
 ```
