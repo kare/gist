@@ -5,6 +5,11 @@
 
 ## Installation
 
+Download latest release from
+[GitHub](https://github.com/kare/gist/releases/latest), extract archive and
+install an executable for your operating system.
+
+Alternatively if you have Go compiler installed you may want to run:
 ```
 go get kkn.fi/cmd/gist
 ```
