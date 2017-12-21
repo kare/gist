@@ -68,20 +68,21 @@ func main() {
 	if *fileFlag == "" && len(flag.Args()) == 0 {
 		usage()
 	}
-	filenames := flag.Args()
 	files := make(map[github.GistFilename]github.GistFile)
-	for _, f := range filenames {
-		file := string(f)
-		buf, err := ioutil.ReadFile(file)
+	var file *string
+	for _, f := range flag.Args() {
+		file = new(string)
+		*file = f
+		buf, err := ioutil.ReadFile(*file)
 		if err != nil {
 			log.Fatal(err)
 		}
 		content := string(buf)
 		gistFile := github.GistFile{
-			Filename: &file,
+			Filename: file,
 			Content:  &content,
 		}
-		files[github.GistFilename(file)] = gistFile
+		files[github.GistFilename(*file)] = gistFile
 	}
 	if *fileFlag != "" {
 		buf, err := ioutil.ReadAll(os.Stdin)
