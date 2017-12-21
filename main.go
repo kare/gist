@@ -141,6 +141,9 @@ func loadAuth() {
 			"password directly is that you can limit its use and revoke it at any time.\n\n")
 	}
 	fi, err := os.Stat(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
 	if fi.Mode()&0077 != 0 {
 		log.Fatalf("reading token: %s mode is %#o, want %#o", shortFilename, fi.Mode()&0777, fi.Mode()&0700)
 	}
