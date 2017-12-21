@@ -2,6 +2,7 @@
 IMPORT_PATH := kkn.fi/cmd/gist
 
 GOMETALINTER := $(GOPATH)/bin/gometalinter
+GORELEASER := $(GOPATH)/bin/goreleaser
 
 VERSION=$(shell git describe --tags --always --dirty="-dev")
 DATE=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
@@ -17,7 +18,7 @@ install:
 
 .PHONY: clean
 clean:
-	@rm -rf gist
+	@rm -rf gist dist
 
 .PHONY: test
 test:
@@ -30,6 +31,13 @@ lint: $(GOMETALINTER)
 $(GOMETALINTER):
 	go get -u github.com/alecthomas/gometalinter
 	gometalinter --install
+
+.PHONY: release
+release: $(GORELEASER) clean
+	goreleaser
+
+$(GORELEASER):
+	go get -u github.com/goreleaser/goreleaser
 
 .PHONY: setup
 setup:

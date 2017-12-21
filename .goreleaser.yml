@@ -1,0 +1,16 @@
+project_name: gist
+release:
+  github:
+    owner: kare
+    name: gist
+builds:
+  -
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+archive:
+  files:
+    - LICENSE
+    - README.md
